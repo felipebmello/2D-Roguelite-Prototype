@@ -5,40 +5,54 @@ using UnityEngine;
 
 public class Room : MonoBehaviour
 {
-    private int roomNumber;
-    private int numberOfDoors;
+    [SerializeField] private int roomNumber;
+    [SerializeField] private Vector2Int posInGrid;
+    [SerializeField] private Type roomType = Type.Normal;
 
-    public enum Direction { North, South, East, West };
-    private enum Type { Normal, Special };
+    private enum Type { Spawn, Normal, End };
 
-    private List<Direction> doorDirections = new List<Direction>();
+    [SerializeField] private List<Direction> doorDirections = new List<Direction>();
 
     public int GetRoomNumber()
     {
         return roomNumber;
     }
-
     public void SetRoomNumber(int genIndex)
     {
         this.roomNumber = genIndex;
     }
 
+    internal void SetPositionInGrid(Vector2Int roomPos)
+    {
+        this.posInGrid = roomPos;
+    }
+    internal Vector2Int GetPositionInGrid()
+    {
+        return this.posInGrid;
+    }
+
+    public void SetRoomType(int value)
+    {
+        roomType = (Type) value;
+    }
+    
+    public int GetRoomType()
+    {
+        return (int) roomType;
+    }
+
     public void AddDoor(Direction dir)
     {
-        numberOfDoors++;
         doorDirections.Add(dir);
     }
 
-
-    // Start is called before the first frame update
-    void Start()
+    public bool ContainsDoor(Direction dir) 
     {
-        
+        return doorDirections.Contains(dir);
     }
 
-    // Update is called once per frame
-    void Update()
+    public int GetNumberOfDoors() 
     {
-        
+        return doorDirections.Count;
     }
 }

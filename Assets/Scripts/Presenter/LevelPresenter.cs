@@ -2,21 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class LevelPresenter : MonoBehaviour
 {
     [SerializeField] Level level;
-    [SerializeField] Image roomUIPrefab;
+    [SerializeField] GameObject roomUIPrefab;
+    [SerializeField] Button resetUIButton;
     [SerializeField] float timerToDraw = 0.5f;
 
-    private float localOffsetX = 216;
-    private float localOffsetY = 108;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        roomUIPrefab.transform.position = new Vector3(-783, 0, 0);
-    }
+    private int localOffsetX = 188;
+    private int localOffsetY = 100;
 
     private void OnEnable()
     {
@@ -30,22 +26,36 @@ public class LevelPresenter : MonoBehaviour
 
     private void UpdateUI()
     {
-        DrawRooms();
+        resetUIButton.interactable = false;
+        StartCoroutine(DrawRooms());
     }
 
-    private void DrawRooms()
+    private IEnumerator DrawRooms()
     {
         foreach (Room r in level.GetRooms())
         {
-            Image currentImage = Instantiate(roomUIPrefab, this.transform);
-            currentImage.rectTransform.localPosition += (new Vector3 (localOffsetX, 0, 0) * r.GetRoomNumber());
-            new WaitForSeconds(timerToDraw);
+            GameObject roomUI = Instantiate(roomUIPrefab, this.transform);
+            Vector2Int imagePos = ((new Vector2Int (localOffsetX, localOffsetY)) * (r.GetPositionInGrid() - level.GetGridOrigin()));
+            roomUI.GetComponent<Image>().rectTransform.localPosition += new Vector3 (imagePos.x, imagePos.y, 0);
+            if (r.GetRoomType() == 0) roomUI.GetComponent<Image>().color = Color.green;
+            if (r.GetRoomType() == 2) roomUI.GetComponent<Image>().color = Color.grey;
+            roomUI.GetComponentInChildren<Text>().text = r.GetRoomNumber().ToString();
+            foreach (Direction dir in Enum.GetValues(typeof(Direction)))
+            {
+                if (r.ContainsDoor(dir)) roomUI.transform.Find("Door "+dir).gameObject.SetActive(true);
+            }
+            yield return new WaitForSeconds(timerToDraw);
         }
+        resetUIButton.interactable = true;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ResetLevel() 
     {
-        
+        foreach (Image image in FindObjectsOfType<Image>()) {
+            if (image.name.Contains("RoomUI")) Destroy(image.gameObject);
+        }
+        level.ResetRoomsCreation();
+        UpdateUI();
     }
+
 }
