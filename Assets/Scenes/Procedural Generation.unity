@@ -275,6 +275,7 @@ MonoBehaviour:
   roomPrefab: {fileID: 7009524372828579039, guid: 6a8191683577fa14a99493aa3af6dd09, type: 3}
   rooms: []
   roomsGrid: []
+  maxDirectionRetries: 20
 --- !u!4 &459773055
 Transform:
   m_ObjectHideFlags: 0
@@ -360,7 +361,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.3018868, g: 0.2976148, b: 0.2976148, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -553,10 +554,10 @@ RectTransform:
   m_Father: {fileID: 297718116}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 738, y: 459}
-  m_SizeDelta: {x: 325.93, y: 79.35}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -222, y: -75}
+  m_SizeDelta: {x: 325.92993, y: 79.349976}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1022674828
 MonoBehaviour:
